@@ -1,11 +1,11 @@
 {
-	"name":"Touch and Go",
+	"name":"FirstREACH",
 	"main":"./index.html",
 	"icon":"icon.png",
-	"icon_color":"gray",
+	"icon_color":"black",
 	"version":"0.0.1",
-	"author":"Ryan Sturmer",
+	"author":"Ryan Sturmer + TH",
 	"website":"http://www.ryansturmer.com",
-	"description":"Quick tool navigation using a clickable/touchable interface.",
-	"id":"fabmo-touchandgo"
+	"description":"FirstREACH puttering ...",
+	"id":"fabmo-firstreach"
 }
