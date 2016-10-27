@@ -252,6 +252,7 @@ function midpoint(a,b) {
           this.goto(this.getToolPosition(), 1000);
         }
         else {
+
         $.confirm({
             text: "Are you sure you want to move the reticule?",
             confirm: function() {
@@ -265,6 +266,7 @@ function midpoint(a,b) {
             }
         });
         }
+
      }    
     } else if(evt.changedTouches.length === 2) {
     
@@ -304,18 +306,18 @@ function midpoint(a,b) {
           this.goto(this.getToolPosition(), 1000);
       }
       else {
-      $.confirm({
-        text: "Are you sure you want to move the reticule?",
-        confirm: function() {
-            event = {}
-            event.pos = this.mouseToActual(mousePos);
-            event.snapPos = snap2d(event.pos, this.grid.minor);
-            this.emit('click', event);
-      }.bind(this),
-        cancel: function() {
-            // nothing to do
-        }
-      });
+      // $.confirm({
+      //   text: "Are you sure you want to move the reticule?",
+      //   confirm: function() {
+      //       event = {}
+      //       event.pos = this.mouseToActual(mousePos);
+      //       event.snapPos = snap2d(event.pos, this.grid.minor);
+      //       this.emit('click', event);
+      // }.bind(this),
+      //   cancel: function() {
+      //       // nothing to do
+      //   }
+      // });
      }
     }
       this.dragging = false;
