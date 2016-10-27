@@ -309,10 +309,10 @@ function midpoint(a,b) {
       // $.confirm({
       //   text: "Are you sure you want to move the reticule?",
       //   confirm: function() {
-      //       event = {}
-      //       event.pos = this.mouseToActual(mousePos);
-      //       event.snapPos = snap2d(event.pos, this.grid.minor);
-      //       this.emit('click', event);
+            event = {}
+            event.pos = this.mouseToActual(mousePos);
+            event.snapPos = snap2d(event.pos, this.grid.minor);
+            this.emit('click', event);
       // }.bind(this),
       //   cancel: function() {
       //       // nothing to do
