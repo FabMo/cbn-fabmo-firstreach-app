@@ -24,6 +24,10 @@
     <script src="js/dashboard.js"></script>
     <script src="js/tooldisplay.js"></script>
     <script src="js/jquery.confirm.min.js"></script>
+    <script type="text/javascript">
+      var fabmo = new FabMoDashboard();
+    </script>
+
 
     <script type="text/javascript">
         var display;
@@ -80,7 +84,10 @@
           });
 
           $('.home-button').click(function(evt) {
-            display.gotoExtents(1000);
+//            display.gotoExtents(1000);
+            // my version of "home"
+            gcode = 'G0 X0.000' + ' Y0.000';
+            fabmoDashboard.runGCode(gcode);
           });
 
           $('.center-button').click(function(evt) {
@@ -116,11 +123,26 @@
             }
           });
 
+
+
           display.on('click', function(evt) {
             pos = state.snap ? evt.snapPos : evt.pos;
-            gcode = 'G0 X' + pos.x.toFixed(5) + ' Y' + pos.y.toFixed(5);
-            fabmoDashboard.runGCode(gcode);
+//            gcode = 'G0 X' + pos.x.toFixed(5) + ' Y' + pos.y.toFixed(5);
+//            gcode = 'G0 X3.333' + ' Y4.0';
+//            fabmoDashboard.runGCode(gcode);
+
+            var sbcode; 
+            sbcode = 'M2,' + pos.x.toFixed(5) + ',' + pos.y.toFixed(5);
+//            var mult_cmds=[
+//              'M2,1,2',// + this.value,
+//              'M2,.5,6'
+//              ].join("\n");
+            fabmo.runSBP(sbcode);
+ 
           });
+
+
+
 
           window.addEventListener('resize', resizeCanvas);
           resizeCanvas();
