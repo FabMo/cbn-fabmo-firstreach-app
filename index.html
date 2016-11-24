@@ -127,17 +127,20 @@
 
           display.on('click', function(evt) {
             pos = state.snap ? evt.snapPos : evt.pos;
-//            gcode = 'G0 X' + pos.x.toFixed(5) + ' Y' + pos.y.toFixed(5);
-//            gcode = 'G0 X3.333' + ' Y4.0';
-//            fabmoDashboard.runGCode(gcode);
+           gcode = ['G0 X' + pos.x.toFixed(5) + ' Y' + pos.y.toFixed(5),
+                    'G0 X10.0' + ' Y20.0'
+                    ].join("\n");
+//           gcode = 'G0 X' + pos.x.toFixed(5) + ' Y' + pos.y.toFixed(5);
+//           gcode = 'G0 X10.0' + ' Y20.0';
+           fabmoDashboard.runGCode(gcode);
 
-            var sbcode; 
-            sbcode = 'M2,' + pos.x.toFixed(5) + ',' + pos.y.toFixed(5);
-//            var mult_cmds=[
+//             var sbcode; 
+// //            sbcode = 'M2,' + pos.x.toFixed(5) + ',' + pos.y.toFixed(5);
+//             sbcode = [
 //              'M2,1,2',// + this.value,
 //              'M2,.5,6'
 //              ].join("\n");
-            fabmo.runSBP(sbcode);
+//             fabmo.runSBP(sbcode);
  
           });
 
