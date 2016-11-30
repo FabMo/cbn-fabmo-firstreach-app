@@ -87,7 +87,7 @@
 //            display.gotoExtents(1000);
             // my version of "home"
             gcode = 'G0 X0.000' + ' Y0.000';
-            fabmoDashboard.runGCode(gcode);
+            fabmo.runGCode(gcode);
           });
 
           $('.center-button').click(function(evt) {
@@ -132,7 +132,7 @@
                     ].join("\n");
 //           gcode = 'G0 X' + pos.x.toFixed(5) + ' Y' + pos.y.toFixed(5);
 //           gcode = 'G0 X10.0' + ' Y20.0';
-           fabmoDashboard.runLiveCode(gcode);
+           fabmo.runLiveCode(gcode);
 
 //             var sbcode; 
 // //            sbcode = 'M2,' + pos.x.toFixed(5) + ',' + pos.y.toFixed(5);
