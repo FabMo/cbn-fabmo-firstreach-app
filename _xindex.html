@@ -21,12 +21,15 @@
     
     <script src="js/jquery.js"></script>    
     <script src="js/bootstrap.min.js"></script>
+    <script src="js/fabmo.js"></script>
     <script src="js/tooldisplay.js"></script>
     <script src="js/jquery.confirm.min.js"></script>
-    <script src="js/fabmo.js"></script>
-    
     <script type="text/javascript">
       var fabmo = new FabMoDashboard();
+    </script>
+
+
+    <script type="text/javascript">
         var display;
         var state = {
           snap : 'false'
@@ -81,7 +84,10 @@
           });
 
           $('.home-button').click(function(evt) {
-            display.gotoExtents(1000);
+//            display.gotoExtents(1000);
+            // my version of "home"
+            gcode = 'G0 X0.000' + ' Y0.000';
+            fabmo.runGCode(gcode);
           });
 
           $('.center-button').click(function(evt) {
@@ -96,7 +102,7 @@
             tableColor : '#FFFF99'
           });
 
-          fabmo.on('status', function(status) {
+          fabmoDashboard.on('status', function(status) {
             x = status.posx;
             y = status.posy;
             if(x != undefined && y != undefined) {
@@ -104,30 +110,42 @@
             }
           });
 
-          fabmo.requestStatus();
+          fabmoDashboard.requestStatus();
 
-          fabmo.getConfig(function(err, cfg) {
+          fabmoDashboard.getConfig(function(err, cfg) {
             try {
               if(cfg.machine.envelope) {
                 display.setExtents(cfg.machine.envelope);
                 display.gotoExtents(1000);
               }              
-              if(cfg.machine.auth_input === 0) {
-                display.setConfirm(true);
-              }
             } catch(e) {
               console.error(e);
             }
           });
 
+
+
           display.on('click', function(evt) {
             pos = state.snap ? evt.snapPos : evt.pos;
+           gcode = ['G0 X' + pos.x.toFixed(5) + ' Y' + pos.y.toFixed(5),
+                    'G0 X10.0' + ' Y20.0'
+                    ].join("\n");
+//           gcode = 'G0 X' + pos.x.toFixed(5) + ' Y' + pos.y.toFixed(5);
+//           gcode = 'G0 X10.0' + ' Y20.0';
+           fabmo.runLiveCode(gcode);
 
-            gcode = [ /*'G54',*/
-            'G0 X' + pos.x.toFixed(5) + ' Y' + pos.y.toFixed(5)
-            ].join('\n');
-            fabmo.runGCode(gcode);
+//             var sbcode; 
+// //            sbcode = 'M2,' + pos.x.toFixed(5) + ',' + pos.y.toFixed(5);
+//             sbcode = [
+//              'M2,1,2',// + this.value,
+//              'M2,.5,6'
+//              ].join("\n");
+//             fabmo.runSBP(sbcode);
+ 
           });
+
+
+
 
           window.addEventListener('resize', resizeCanvas);
           resizeCanvas();
