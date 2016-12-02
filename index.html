@@ -126,7 +126,8 @@
             gcode = [ /*'G54',*/
             'G0 X' + pos.x.toFixed(5) + ' Y' + pos.y.toFixed(5)
             ].join('\n');
-            fabmo.runGCode(gcode);
+//            fabmo.runGCode(gcode);
+            fabmo.runLiveCode(gcode);
           });
 
           window.addEventListener('resize', resizeCanvas);
