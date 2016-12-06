@@ -113,7 +113,8 @@
                 display.gotoExtents(1000);
               }              
               if(cfg.machine.auth_input === 0) {
-                display.setConfirm(true);
+                display.setConfirm(false);
+//                display.setConfirm(true);
               }
             } catch(e) {
               console.error(e);
@@ -128,6 +129,7 @@
             ].join('\n');
 //            fabmo.runGCode(gcode);
             fabmo.runLiveCode(gcode);
+            console.log("*code sent");
           });
 
           window.addEventListener('resize', resizeCanvas);
