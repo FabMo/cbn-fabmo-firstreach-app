@@ -122,14 +122,17 @@
           });
 
           display.on('click', function(evt) {
+            
+            var result
             pos = state.snap ? evt.snapPos : evt.pos;
 
             gcode = [ /*'G54',*/
             'G0 X' + pos.x.toFixed(5) + ' Y' + pos.y.toFixed(5)
             ].join('\n');
 //            fabmo.runGCode(gcode);
-            fabmo.runLiveCode(gcode);
-            console.log("*code sent");
+//            fabmo.runLiveCode(gcode);
+            fabmo.livecodeMoveFixed('x',20,20,(result)); 
+            console.log("**code sent " + result);
           });
 
           window.addEventListener('resize', resizeCanvas);
