@@ -132,9 +132,9 @@
 //            fabmo.runGCode(gcode);
 //            fabmo.runLiveCode(gcode);
 //  			fabmo.livecodeHeartbeat();
-            fabmo.livecodeMoveFixed('x',2,2,(err)); 
-//            fabmo.livecodeStart('x',20,(err)); 
-            console.log("**code sent " + err);
+//            fabmo.livecodeMoveFixed('x',2,2,(err)); 
+            fabmo.livecodeStart('x',20,(err)); 
+            console.log("**code sent " + JSON.stringify(evt));
           });
 
           window.addEventListener('resize', resizeCanvas);
