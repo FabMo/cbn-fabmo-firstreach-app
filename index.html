@@ -123,7 +123,7 @@
 
           display.on('click', function(evt) {
             
-            var result
+            var err
             pos = state.snap ? evt.snapPos : evt.pos;
 
             gcode = [ /*'G54',*/
@@ -131,8 +131,10 @@
             ].join('\n');
 //            fabmo.runGCode(gcode);
 //            fabmo.runLiveCode(gcode);
-            fabmo.livecodeMoveFixed('x',20,20,(result)); 
-            console.log("**code sent " + result);
+//  			fabmo.livecodeHeartbeat();
+            fabmo.livecodeMoveFixed('x',2,2,(err)); 
+//            fabmo.livecodeStart('x',20,(err)); 
+            console.log("**code sent " + err);
           });
 
           window.addEventListener('resize', resizeCanvas);
