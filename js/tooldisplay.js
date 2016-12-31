@@ -9,25 +9,25 @@ var EasingFunctions = {
   // decelerating to zero velocity
   easeOutQuad: function (t) { return t*(2-t) },
   // acceleration until halfway, then deceleration
-  easeInOutQuad: function (t) { return t<.5 ? 2*t*t : -1+(4-2*t)*t },
+  easeInOutQuad: function (t) { return t<0.5 ? 2*t*t : -1+(4-2*t)*t },
   // accelerating from zero velocity 
   easeInCubic: function (t) { return t*t*t },
   // decelerating to zero velocity 
   easeOutCubic: function (t) { return (--t)*t*t+1 },
   // acceleration until halfway, then deceleration 
-  easeInOutCubic: function (t) { return t<.5 ? 4*t*t*t : (t-1)*(2*t-2)*(2*t-2)+1 },
+  easeInOutCubic: function (t) { return t<0.5 ? 4*t*t*t : (t-1)*(2*t-2)*(2*t-2)+1 },
   // accelerating from zero velocity 
   easeInQuart: function (t) { return t*t*t*t },
   // decelerating to zero velocity 
   easeOutQuart: function (t) { return 1-(--t)*t*t*t },
   // acceleration until halfway, then deceleration
-  easeInOutQuart: function (t) { return t<.5 ? 8*t*t*t*t : 1-8*(--t)*t*t*t },
+  easeInOutQuart: function (t) { return t<0.5 ? 8*t*t*t*t : 1-8*(--t)*t*t*t },
   // accelerating from zero velocity
   easeInQuint: function (t) { return t*t*t*t*t },
   // decelerating to zero velocity
   easeOutQuint: function (t) { return 1+(--t)*t*t*t*t },
   // acceleration until halfway, then deceleration 
-  easeInOutQuint: function (t) { return t<.5 ? 16*t*t*t*t*t : 1+16*(--t)*t*t*t*t }
+  easeInOutQuint: function (t) { return t<0.5 ? 16*t*t*t*t*t : 1+16*(--t)*t*t*t*t }
 }
 
 function closest (num, arr) {
@@ -135,7 +135,7 @@ function midpoint(a,b) {
     this.snap = false;
     this.confirm = false;
 
-    for(key in options) {
+    for(var key in options) {
       this.options[key] = options[key];
     }
     this.scaleTextFontString = this.scaleTextSize + 'px ' + this.scaleTextFont;
@@ -242,7 +242,7 @@ function midpoint(a,b) {
       a = this.getTouchPos(evt.touches[0]);
       b = this.getTouchPos(evt.touches[1]);
       c = dist(a,b);
-      if(this.pinch_dist != null) {
+      if(this.pinch_dist !== null) {
         var factor = (1 + (c-this.pinch_dist)/250.0);
         this.handleScale(this.pinch_center, factor);
       }
@@ -460,7 +460,7 @@ function midpoint(a,b) {
       x+=spacing;
     }
 
-    for(var i=0; i<hlines; i++) {
+    for(i=0; i<hlines; i++) {
       var ys = Math.round(h-y*this.scale);
       ys -= 0.5//(ys%2)/2.0;
       retval.h.push(ys);
@@ -740,7 +740,7 @@ function midpoint(a,b) {
 
   Grid.prototype._drawToolHead = function() {
     var ctx = this.ctx;
-    if(this.toolPos != null) {
+    if(this.toolPos !== null) {
       center = this.actualToMouse(this.toolPos);
       ctx.beginPath();
       
@@ -764,7 +764,7 @@ function midpoint(a,b) {
   Grid.prototype._drawTable = function() {
     var ctx = this.ctx;
 
-    if(this.extents == null) { return; }
+    if(this.extents === null) { return; }
 
     a = this.actualToMouse(snap2d({x : this.extents.xmin, y : this.extents.ymin},this.grid.minor));
     b = this.actualToMouse(snap2d({x : this.extents.xmax, y : this.extents.ymax},this.grid.minor));
