@@ -126,15 +126,19 @@
             var err
             pos = state.snap ? evt.snapPos : evt.pos;
 
-            gcode = [ /*'G54',*/
-            'G0 X' + pos.x.toFixed(5) + ' Y' + pos.y.toFixed(5)
+            gcode = [
+            'LIVE' + pos.x.toFixed(5) + ' ,' + pos.y.toFixed(5)
             ].join('\n');
+            var to_x = pos.x;
+            var to_y = pos.y;
 //            fabmo.runGCode(gcode);
 //            fabmo.runLiveCode(gcode);
 //  			fabmo.livecodeHeartbeat();
 //            fabmo.livecodeMoveFixed('x',2,2,(err)); 
-            fabmo.livecodeStart(75,95,(err)); 
-            console.log("**code sent " + JSON.stringify(evt));
+//            fabmo.livecodeStart(75,95,(err)); 
+//            fabmo.livecodeStart(pos.x, pos.y,(err))//not good property
+            fabmo.livecodeStart(to_x, to_y,(err));
+            console.log("**code sent " + JSON.stringify(gcode));
           });
 
           window.addEventListener('resize', resizeCanvas);
