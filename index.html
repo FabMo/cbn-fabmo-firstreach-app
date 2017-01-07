@@ -99,7 +99,7 @@
           fabmo.on('status', function(status) {
             x = status.posx;
             y = status.posy;
-            if(x != undefined && y != undefined) {
+            if(x !== undefined && y !== undefined) {
               display.setToolPosition(x,y);
             }
           });
@@ -126,9 +126,9 @@
             var err
             pos = state.snap ? evt.snapPos : evt.pos;
 
-            gcode = [
-            'LIVE' + pos.x.toFixed(5) + ' ,' + pos.y.toFixed(5)
-            ].join('\n');
+            //gcode = [
+            // 'LiveLoc ' + pos.x.toFixed(5) + ' ,' + pos.y.toFixed(5)
+            // ].join('\n');
             var to_x = pos.x;
             var to_y = pos.y;
 //            fabmo.runGCode(gcode);
@@ -137,8 +137,9 @@
 //            fabmo.livecodeMoveFixed('x',2,2,(err)); 
 //            fabmo.livecodeStart(75,95,(err)); 
 //            fabmo.livecodeStart(pos.x, pos.y,(err))//not good property
+//            console.log("**loc " + JSON.stringify(gcode));
             fabmo.livecodeStart(to_x, to_y,(err));
-            console.log("**code sent " + JSON.stringify(gcode));
+            console.log("**loc ", to_x, to_y);
           });
 
           window.addEventListener('resize', resizeCanvas);
