@@ -194,10 +194,11 @@ FabMoDashboard.prototype._simulateCall = function(name, data, callback) {
 			}.bind(this));
 
 			// Data.length
+			var msg;
 			if(data.jobs.length === 1) {
-				var msg = "Job Submitted: " + data.jobs[0].filename
+				msg = "Job Submitted: " + data.jobs[0].filename
 			} else {
-				var msg = data.jobs.length + " Jobs Submitted: " + files.join(',');
+				msg = data.jobs.length + " Jobs Submitted: " + files.join(',');
 			}
 			text.textContent = msg;
 			showToaster(toast);
@@ -272,7 +273,7 @@ FabMoDashboard.prototype._setupMessageListener = function() {
 				if('id' in message) {
 					if(message.id in this._event_listeners) {
 						listeners = this._event_listeners[message.id]
-						for(i in listeners) {
+						for(var i in listeners) {
 							listeners[i](message.data);
 						}
 					}
@@ -693,7 +694,6 @@ FabMoDashboard.prototype.manualStop = function(callback) {
 //TH WORKING ON live move version using manual move as template
 FabMoDashboard.prototype.livecodeMoveFixed = function(axis, speed, distance, callback) {
 	this._call("livecodeMoveFixed",{"axis":axis, "speed": speed, "dist":distance}, callback);
-	console.log("livestart " + axis + ", @ " + speed + ", dist> " + distance);
 }
 
 // FabMoDashboard.prototype.livecodeStart = function(axis, speed, callback) {

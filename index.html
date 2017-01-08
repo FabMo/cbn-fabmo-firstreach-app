@@ -50,11 +50,12 @@
         }
 
         function loadState() {
+          var obj;
           if(typeof(Storage) !== "undefined") {
             try {
-              var obj = JSON.parse(localStorage.state);
+              obj = JSON.parse(localStorage.state);
             } catch(e) {
-              var obj = {snap : false};
+              obj = {snap : false};
             }
             state.snap = obj.snap || false;
           } else {
@@ -121,6 +122,8 @@
             }
           });
 
+//          fabmo.runGCode('G90 \n'); // Make us absolute
+
           display.on('click', function(evt) {
             
             var err
@@ -133,7 +136,7 @@
             var to_y = pos.y;
 //            fabmo.runGCode(gcode);
 //            fabmo.runLiveCode(gcode);
-//  			fabmo.livecodeHeartbeat();
+//  			    fabmo.livecodeHeartbeat();
 //            fabmo.livecodeMoveFixed('x',2,2,(err)); 
 //            fabmo.livecodeStart(75,95,(err)); 
 //            fabmo.livecodeStart(pos.x, pos.y,(err))//not good property
@@ -148,6 +151,11 @@
           loadState();
           setupControls();
           display.draw();
+
+          window.addEventListener("unload", function(e){ // Clear file ops, make abs on LOAD & UNLOAD
+            var gcode = ['M30', 'G90'].join('\n');
+            fabmo.runGCode(gcode);
+          }, false);
 
         });
 

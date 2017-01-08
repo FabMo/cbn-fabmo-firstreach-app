@@ -174,7 +174,7 @@ function midpoint(a,b) {
   Grid.prototype.emit = function(name, evt) {
     listeners = this.listeners[name];
     if(listeners) {
-      for(i in listeners) {
+      for(var i in listeners) {
         listener = listeners[i];
         listener(evt);
       }
@@ -296,8 +296,20 @@ function midpoint(a,b) {
   Grid.prototype.onMouseMove = function(evt) {
     var mousePos = this.getMousePos(evt);
     if(this.dragging) {
-      this.handleDrag(mousePos);
-      this.snapPos = null;
+//      this.handleDrag(mousePos);
+//      this.snapPos = null;
+
+          this.doConfirm({ text : 'Move the tool?'}, 
+            function() {
+              event = {}
+              event.pos = this.mouseToActual(mousePos);
+              event.snapPos = snap2d(event.pos, this.grid.minor);
+              this.emit('click', event);
+            }.bind(this)
+          );
+ 
+
+
     } else {
       this.snapPos = mousePos;
     }
