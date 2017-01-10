@@ -122,27 +122,25 @@
             }
           });
 
+          var lastTime = new Date();
+          //cktime.last = cktime.getTime();
+
+          fabmo.runGCode('F30 \n');
 //          fabmo.runGCode('G90 \n'); // Make us absolute
 
           display.on('click', function(evt) {
-            
+            var newTime = new Date();
+            var interval = newTime.getTime() - lastTime.getTime();
             var err
             pos = state.snap ? evt.snapPos : evt.pos;
+            lastTime = newTime;
 
-            //gcode = [
-            // 'LiveLoc ' + pos.x.toFixed(5) + ' ,' + pos.y.toFixed(5)
-            // ].join('\n');
             var to_x = pos.x;
             var to_y = pos.y;
-//            fabmo.runGCode(gcode);
-//            fabmo.runLiveCode(gcode);
-//  			    fabmo.livecodeHeartbeat();
-//            fabmo.livecodeMoveFixed('x',2,2,(err)); 
-//            fabmo.livecodeStart(75,95,(err)); 
-//            fabmo.livecodeStart(pos.x, pos.y,(err))//not good property
-//            console.log("**loc " + JSON.stringify(gcode));
+
             fabmo.livecodeStart(to_x, to_y,(err));
-            console.log("**loc ", to_x, to_y);
+console.log("**loc ", to_x, to_y, interval);
+//            console.log("**loc " + JSON.stringify(gcode));
           });
 
           window.addEventListener('resize', resizeCanvas);
