@@ -141,7 +141,7 @@
 
             var to_x = pos.x;
             var to_y = pos.y;
-            if (Math.abs(to_x - last_pos_x) > 0.1 || Math.abs(to_y - last_pos_y) > 0.1) {
+            if (Math.abs(to_x - last_pos_x) > 0.01 || Math.abs(to_y - last_pos_y) > 0.01) {
               fabmo.livecodeStart(to_x, to_y,(err));
               last_pos_x = to_x;
               last_pos_y = to_y;
