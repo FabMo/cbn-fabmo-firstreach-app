@@ -128,6 +128,10 @@
           fabmo.runGCode('F30 \n');
 //          fabmo.runGCode('G90 \n'); // Make us absolute
 
+          //pos = evt.pos;
+          var last_pos_x = 0;
+          var last_pos_y = 0;
+
           display.on('click', function(evt) {
             var newTime = new Date();
             var interval = newTime.getTime() - lastTime.getTime();
@@ -137,9 +141,13 @@
 
             var to_x = pos.x;
             var to_y = pos.y;
+            if (Math.abs(to_x - last_pos_x) > 0.1 || Math.abs(to_y - last_pos_y) > 0.1) {
+              fabmo.livecodeStart(to_x, to_y,(err));
+              last_pos_x = to_x;
+              last_pos_y = to_y;
+console.log("**nextLoc ", to_x, to_y, interval);
+            }
 
-            fabmo.livecodeStart(to_x, to_y,(err));
-console.log("**loc ", to_x, to_y, interval);
 //            console.log("**loc " + JSON.stringify(gcode));
           });
 
