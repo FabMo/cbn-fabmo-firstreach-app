@@ -6,7 +6,7 @@
 	"repository":"https://github.com/tedh-shopbot/cbn-fabmo-firstreach-app/",
 	"icon":"icon.png",
 	"icon_color":"white",
-	"version":"0.0.3",
+	"version":"0.0.4",
 	"website":"http://www.handibot.com",
 	"description":"FirstREACH puttering ...",
 	"id":"fabmo-firstreach",
