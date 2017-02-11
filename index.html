@@ -24,7 +24,9 @@
     <script src="js/tooldisplay.js"></script>
     <script src="js/jquery.confirm.min.js"></script>
     <script src="js/fabmo.js"></script>
-    
+
+  <script type="text/javascript" src="js/paper/paper-full.js"></script>
+
     <script type="text/javascript">
       var fabmo = new FabMoDashboard();
         var display;
@@ -91,11 +93,27 @@
         }
 
 
+/////////////////////////////////////////////////////////////
         $(document).ready(function() {
           canvas = document.getElementById('toolcanvas');
           display = new Grid(canvas, {
             tableColor : '#FFFF99'
           });
+
+
+          this.paper = new paper.PaperScope();
+          this.paper.setup(canvas);
+          this.paper.style = "";
+ console.log(canvas)  
+
+          resizeCanvas();
+          display.scale = Math.max(display.canvas.width, display.canvas.height)/8.0;
+          loadState();
+          setupControls();
+          display.draw();
+
+
+
 
           fabmo.on('status', function(status) {
             x = status.posx;
@@ -128,6 +146,14 @@
           fabmo.runGCode('F30 \n');
 //          fabmo.runGCode('G90 \n'); // Make us absolute
 
+//   could be identified more individually
+    // Create a Paper.js Path to draw a line into it:
+//     var path = new paper.Path();
+//     path.strokeColor = 'black';
+//     var start = new paper.Point(5, 5);
+//     path.moveTo(start);
+ console.log("start point ?")  
+
           //pos = evt.pos;
           var last_pos_x = 0;
           var last_pos_y = 0;
@@ -147,8 +173,17 @@
               last_pos_y = to_y;
 console.log("**nextLoc ", to_x, to_y, interval);
             }
-
 //            console.log("**loc " + JSON.stringify(gcode));
+
+    // // Note that the plus operator on Point objects does not work
+    // // in JavaScript. Instead, we need to call the add() function:
+//               path.lineTo(start.add([ 50, 25 ]));
+    // // Draw the view now:
+//               paper.view.draw();
+//console.log("trying to draw ?")  
+
+
+
           });
 
           window.addEventListener('resize', resizeCanvas);
@@ -158,14 +193,21 @@ console.log("**nextLoc ", to_x, to_y, interval);
           setupControls();
           display.draw();
 
+    // view.onResize = function(event) {
+    // // Whenever the view is resized, move the path to its center:
+    //     path.position = view.center;
+    // }
+
           window.addEventListener("unload", function(e){ // Clear file ops, make abs on LOAD & UNLOAD
             var gcode = ['M30', 'G90'].join('\n');
             fabmo.runGCode(gcode);
           }, false);
 
+
+/////////////////////////////////////////////////
         });
 
-
     </script>
+
   </body>
 </html>
