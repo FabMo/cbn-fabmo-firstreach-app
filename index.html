@@ -52,8 +52,8 @@
 
                       var to_x = pos.x;
                       var to_y = pos.y;
-                      if (Math.abs(to_x - last_pos_x) > 25 || Math.abs(to_y - last_pos_y) > 25) {
-                        fabmo.livecodeStart((to_x/100), (to_y/100),(err));
+                      if (Math.abs(to_x - last_pos_x) > 15 || Math.abs(to_y - last_pos_y) > 15) {
+                        fabmo.livecodeStart((to_x *.01), (to_y *.01),(err));
                         last_pos_x = to_x;
                         last_pos_y = to_y;
                         path.add(event.point);    //original
@@ -72,7 +72,9 @@
             var segmentCount = path.segments.length;
 
             // When the mouse is released, simplify it:
-    //        path.simplify(10);
+//            path.simplify(10);
+            path.smooth({ type: 'geometric', factor: .5 });
+            path.flatten(.5);
 
             // Select the path, so we can see its segments:
             path.fullySelected = true;
