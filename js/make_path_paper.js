@@ -1,13 +1,14 @@
         var fabmo = new FabMoDashboard();
         var path;
+
         var last_pos_x = 0;
         var last_pos_y = 0;
         var pos, smooth_pt1, smooth_pt2;
         var err;
+        var m_rate;
         var pt_ct = 0, seg_ct = 0, next_ct = 0;
         var len_here = 0;
         var smooth_pt = new Point();
-
 
 
         var textItem = new PointText({
@@ -37,20 +38,21 @@
         function onMouseDrag(event) {
 
                       pos = event.point;
+                      m_rate = event.delta.length;
 
                       var to_x = pos.x;
                       var to_y = pos.y;
-                      if (Math.abs(to_x - last_pos_x) > 2 || Math.abs(to_y - last_pos_y) > 2) {
+                      if (Math.abs(to_x - last_pos_x) > (m_rate) || Math.abs(to_y - last_pos_y) > (m_rate)) {
                         last_pos_x = to_x;
                         last_pos_y = to_y;
                         path.add(pos)
 //                        path.add(event.point);    //original
                         pt_ct++;
   
-                          if (pt_ct > 7) {
+                          if (pt_ct > 2* m_rate) {
                             pt_ct = 0;
 
-                            path.smooth({ type: 'geometric', factor: 0.7, from: seg_ct, to: (seg_ct + 7)});
+                            path.smooth({ type: 'continuous', from: seg_ct, to: (seg_ct + 7)});
                             seg_ct += 8;
                             
                             var dist_now = path.length - len_here;
@@ -59,7 +61,7 @@
                               smooth_pt = path.getPointAt(len_here + (i * dist_now));
                               fabmo.livecodeStart((smooth_pt.x * 0.017), (smooth_pt.y * 0.017),(err));
                             }
-                            console.log("**nextLoc ", to_x, to_y, pt_ct, seg_ct, path.length);
+                            console.log("**nextLoc ", to_x, to_y, pt_ct, seg_ct, m_rate);
 
                             len_here = path.length;
                           }
@@ -74,7 +76,7 @@
 
         // When the mouse is released, we simplify the path:
         function onMouseUp(event) {
-            path.smooth({ type: 'geometric', factor: 0.5, from: seg_ct, to: (seg_ct + pt_ct)});
+//            path.smooth({ type: 'geometric', factor: 0.5, from: seg_ct, to: (seg_ct + pt_ct)});
             pt_ct = 0;
             seg_ct = 0;
             len_here = 0;
@@ -91,5 +93,5 @@
             var newSegmentCount = path.segments.length;
             var difference = segmentCount - newSegmentCount;
             var percentage = 100 - Math.round(newSegmentCount / segmentCount * 100);
-            textItem.content = difference + ' of the ' + segmentCount + ' segments were removed. Saving ' + percentage + '%';
+            textItem.content = path.length + ' long with ' + segmentCount + ' segments ' + m_rate + ' ck?';
         }
