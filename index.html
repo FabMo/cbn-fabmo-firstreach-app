@@ -23,6 +23,15 @@
     <canvas id="canvas" resize></canvas>
     <script type="text/paperscript" canvas="canvas" src="js/make_path_paper.js">
     </script>
+    <script type="text/javascript">
+        var fabmo = new FabMoDashboard();
+        $(document).ready(function() {
+	      window.addEventListener("unload", function(e){ // Clear file ops, make abs on LOAD & UNLOAD
+	        var gcode = ['M30', 'G90'].join('\n');
+	        fabmo.runGCode(gcode);
+	      }, false);
+        });
+    </script>
 
 </body>
 
