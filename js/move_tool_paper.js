@@ -35,7 +35,7 @@
           fabmo.requestStatus();
 //          var circle = new Path.Circle((status.posx * 50),(status.posx * 50), 10);
           var circle = new Path.Circle(100,100, 10);
-          circle.strokeColor = "red";
+          circle.strokeColor = "black";
 
 
           fabmo.getConfig(function(err, cfg) {
