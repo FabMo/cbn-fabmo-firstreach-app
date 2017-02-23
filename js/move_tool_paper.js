@@ -7,21 +7,61 @@
         var pos, smooth_pt1, smooth_pt2;
         var err;
         var m_rate;
-        var pt_ct = 0, seg_ct = 0, next_ct = 0;
+        var pt_ct = 0, seg_ct = 0, evt_ct = 0;
         var len_here = 0;
         var smooth_pt = new Point();
 
-        var textItem1 = new PointText({
+        var textItem3 = new PointText({
             content: 'Segment count/length: ',
             point: new Point(20, 30),
-            fillColor: 'black',
+            fillColor: 'green',
         });
-        var textItem2 = new PointText({
+        var textItem4 = new PointText({
             content: 'Tool Location: ',
             point: new Point(20, 50),
-            fillColor: 'black',
+            fillColor: 'green',
         });
 
+            path = new Path({
+                fullySelected: true,
+                strokeColor: 'green',
+            });
+path.add(new Point(0, 0));
+path.add(new Point(100, 50));                
+
+
+        //canvas2.addEventListener('mousewheel', this.onMouseWheel.bind(this));
+        if (canvas2.addEventListener) {
+          // IE9, Chrome, Safari, Opera
+          canvas2.addEventListener("mousewheel", MouseWheelHandler, false);
+          // Firefox
+          canvas2.addEventListener("DOMMouseScroll", MouseWheelHandler, false);
+        }
+        // IE 6/7/8
+        //else canvas2.attachEvent("onmousewheel", MouseWheelHandler);
+
+          function MouseWheelHandler(e) {
+            // cross-browser wheel delta
+            //var e = window.event || e; // old IE support
+            var delta = Math.max(-1, Math.min(1, (e.wheelDelta || -e.detail)));
+            //var delta = e.wheelDelta;
+            evt_ct++;
+            pt_ct += delta;
+            if (evt_ct > 4) {
+              seg_ct += 0.1 * pt_ct;
+            fabmo.livecodeStart(tool_x, seg_ct,(err));
+            console.log(delta, pt_ct, seg_ct);
+              pt_ct = 0;
+              evt_ct = 0;
+            }
+            // else if (pt_ct < -2) {
+            //   seg_ct -= 0.1 * pt_ct;
+            // fabmo.livecodeStart(tool_x, seg_ct,(err));
+            // console.log(delta, pt_ct, seg_ct);
+            //   pt_ct = 0;
+            // }
+            return false;
+          }
 
 
           fabmo.on('status', function(status) {
@@ -29,14 +69,13 @@
             tool_y = status.posy;
             circle.position.x = tool_x * 50; 
             circle.position.y = tool_y * 50; 
-            textItem2.content = 'Tool Location: ' + tool_x.toFixed(3) + ', ' + tool_y.toFixed(3);
+            textItem4.content = 'Tool Location: ' + tool_x.toFixed(3) + ', ' + tool_y.toFixed(3);
           });
 
           fabmo.requestStatus();
 //          var circle = new Path.Circle((status.posx * 50),(status.posx * 50), 10);
-          var circle = new Path.Circle(100,100, 10);
+          var circle = new Path.Circle(100,100, 15);
           circle.strokeColor = "black";
-
 
           fabmo.getConfig(function(err, cfg) {
             try {
@@ -68,61 +107,84 @@
 
         // While the user drags the mouse, points are added to the path
         // at the position of the mouse:
-        function onMouseDrag(event) {
+        // function onMouseDrag(event) {
 
-                      pos = event.point;
-                      m_rate = event.delta.length;
+        //               pos = event.point;
+        //               m_rate = event.delta.length;
 
-                      var to_x = pos.x;
-                      var to_y = pos.y;
-                      if (Math.abs(to_x - last_pos_x) > (m_rate) || Math.abs(to_y - last_pos_y) > (m_rate)) {
-                        last_pos_x = to_x;
-                        last_pos_y = to_y;
-                        path.add(pos)
-                        pt_ct++;
+        //               var to_x = pos.x;
+        //               var to_y = pos.y;
+        //               if (Math.abs(to_x - last_pos_x) > (m_rate) || Math.abs(to_y - last_pos_y) > (m_rate)) {
+        //                 last_pos_x = to_x;
+        //                 last_pos_y = to_y;
+        //                 path.add(pos)
+        //                 pt_ct++;
   
-                          if (pt_ct > 2* m_rate) {
-                            pt_ct = 0;
+        //                   if (pt_ct > 2* m_rate) {
+        //                     pt_ct = 0;
 
-                            path.smooth({ type: 'continuous', from: seg_ct, to: (seg_ct + 7)});
-                            seg_ct += 8;
+        //                     path.smooth({ type: 'continuous', from: seg_ct, to: (seg_ct + 7)});
+        //                     seg_ct += 8;
                             
-                            var dist_now = path.length - len_here;
+        //                     var dist_now = path.length - len_here;
 
-                            for (i = 0; i < 1; i += 0.1) {
-                              smooth_pt = path.getPointAt(len_here + (i * dist_now));
-                              fabmo.livecodeStart((smooth_pt.x * 0.02), (smooth_pt.y * 0.02),(err));
-                            }
-                            //console.log("**nextLoc ", to_x, to_y, pt_ct, seg_ct, m_rate);
+        //                     for (i = 0; i < 1; i += 0.1) {
+        //                       smooth_pt = path.getPointAt(len_here + (i * dist_now));
+        //                       fabmo.livecodeStart((smooth_pt.x * 0.02), (smooth_pt.y * 0.02),(err));
+        //                     }
+        //                     //console.log("**nextLoc ", to_x, to_y, pt_ct, seg_ct, m_rate);
 
-                            len_here = path.length;
-                          }
+        //                     len_here = path.length;
+        //                   }
   
-                      }          
+        //               }          
 
-            // Update the content of the text item to show how many
-            // segments it has:
-            textItem1.content = 'Segment count/length: ' + path.segments.length + ' / ' + path.length.toFixed(3);
-        }
+        //     // Update the content of the text item to show how many
+        //     // segments it has:
+        //     textItem1.content = 'Segment count/length: ' + path.segments.length + ' / ' + path.length.toFixed(3);
+        // }
 
 
-        // When the mouse is released, we simplify the path:
-        function onMouseUp(event) {
-//            path.smooth({ type: 'geometric', factor: 0.5, from: seg_ct, to: (seg_ct + pt_ct)});
-            pt_ct = 0;
-            seg_ct = 0;
-            len_here = 0;
-            var segmentCount = path.segments.length;
-            //console.log(path);
-            // When the mouse is released, simplify it:
-//            path.simplify(10);
-//            path.smooth({ type: 'geometric', factor: .5 });
-//            path.flatten(.5);
+        // // When the mouse is released, we simplify the path:
+//         function onMouseUp(event) {
+// //            path.smooth({ type: 'geometric', factor: 0.5, from: seg_ct, to: (seg_ct + pt_ct)});
+//             pt_ct = 0;
+//             seg_ct = 0;
+//             len_here = 0;
+//             var segmentCount = path.segments.length;
+//             //console.log(path);
+//             // When the mouse is released, simplify it:
+// //            path.simplify(10);
+// //            path.smooth({ type: 'geometric', factor: .5 });
+// //            path.flatten(.5);
 
-            // Select the path, so we can see its segments:
-            path.fullySelected = true;
+//             // Select the path, so we can see its segments:
+//             path.fullySelected = true;
 
-            var newSegmentCount = path.segments.length;
-            var difference = segmentCount - newSegmentCount;
-            var percentage = 100 - Math.round(newSegmentCount / segmentCount * 100);
-        }
+//             var newSegmentCount = path.segments.length;
+//             var difference = segmentCount - newSegmentCount;
+//             var percentage = 100 - Math.round(newSegmentCount / segmentCount * 100);
+//         }
+
+    // if (evt.preventDefault) //disable default wheel action of scrolling page
+    //     evt.preventDefault()
+    // else
+    //     return false
+
+
+// //Blocking the Mouse Wheel
+// document.onmousewheel = function(){ stopWheel(); } /* IE7, IE8 */
+// if(document.addEventListener){ /* Chrome, Safari, Firefox */
+//     document.addEventListener('DOMMouseScroll', stopWheel, false);
+// }
+ 
+// function stopWheel(e){
+//     if(!e){ e = window.event; } /* IE7, IE8, Chrome, Safari */
+//     if(e.preventDefault) { e.preventDefault(); } /* Chrome, Safari, Firefox */
+//     e.returnValue = false; /* IE7, IE8 */
+// }
+// //Re-enabling the Wheel
+// document.onmousewheel = null;  /* IE7, IE8 */
+// if(document.addEventListener){ /* Chrome, Safari, Firefox */
+//     document.removeEventListener('DOMMouseScroll', stopWheel, false);
+// }

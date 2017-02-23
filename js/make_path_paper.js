@@ -36,6 +36,7 @@
 //          var circle = new Path.Circle((status.posx * 50),(status.posx * 50), 10);
           var circle = new Path.Circle(100,100, 10);
           circle.strokeColor = "red";
+          // how to constrain the path of moves to not be at too great an angle
 
 
           fabmo.getConfig(function(err, cfg) {
