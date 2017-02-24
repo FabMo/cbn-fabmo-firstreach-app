@@ -1,14 +1,9 @@
         var fabmo = new FabMoDashboard();
-        var path;
+        //var path;
 
-        var last_pos_x = 0, last_pos_y = 0;
         var tool_x, tool_y;
         var lastTime = new Date();
-
-        var pos, smooth_pt1, smooth_pt2;
-        var pt_ct = 0, seg_ct = 0, evt_ct = 0;
-        var len_here = 0;
-        var smooth_pt = new Point();
+        var pt_ct = 0, moveTo_y = 0, evt_ct = 0;
 
         var textItem3 = new PointText({
             content: 'Segment count/length: ',
@@ -20,7 +15,15 @@
             point: new Point(20, 50),
             fillColor: 'green',
         });
+        var circle = new Path.Circle(100,100, 15);
+        circle.strokeColor = "black";
 
+        if (tool_y) {moveTo_y = tool_y} //Try and set initial location
+
+        var avg_ary = [200,200,200,200,200];
+        var dirFilt_arry = [1,1,1,-1,-1];
+        var dirFilt = 1;
+        var avg = 1000;
 
         if (canvas2.addEventListener) {
           // IE9, Chrome, Safari, Opera
@@ -28,8 +31,6 @@
           // Firefox
           canvas2.addEventListener("DOMMouseScroll", MouseWheelHandler, false);
         }
-          var avg_ary = [200,200,200,200,200];
-          var avg = 1000;
 
           function MouseWheelHandler(e) {
             var err, mult;
@@ -37,26 +38,28 @@
             var newTime = new Date();
             var interval = newTime.getTime() - lastTime.getTime();
             lastTime = newTime;
- 
-            avg = avg - avg_ary[evt_ct];
-            //pt_ct += delta;
+            // Running average of interval as wheel spin-speed estimate
+              dirFilt = dirFilt - dirFilt_arry[evt_ct];
+              dirFilt = dirFilt + delta;
+              dirFilt_arry[evt_ct] = delta;
+              avg = avg - avg_ary[evt_ct];
+              avg = avg + interval;
+              avg_ary[evt_ct] = interval;
+              evt_ct++;
+              if (evt_ct > 4) evt_ct = 0;
+             if(Math.sign(dirFilt) !== Math.sign(delta)) return
+              if (avg < 1000) {
+                mult = 0.1;
+              } else if (avg < 400) {
+                mult = 0.5;
+              } else {
+                mult = 0.01;
+              }
+
+            moveTo_y = moveTo_y + (delta * mult);
+            console.log(delta, moveTo_y.toFixed(3), avg, dirFilt);
             
-            avg = avg + interval;
-            avg_ary[evt_ct] = interval;
-            evt_ct++;
-            if (evt_ct > 4) evt_ct = 0;
-            //      interval = Math.min(Math.max(parseInt(interval), 1), 500);
-            if (avg < 1000) {
-              mult = 0.1;
-            } else if (avg < 400) {
-              mult = 0.5;
-            } else {
-              mult = 0.01;
-            }
-            seg_ct = seg_ct + (delta * mult);
-            
-            fabmo.livecodeStart(tool_x, seg_ct,(err));
-            console.log(delta, seg_ct.toFixed(3), avg, interval);
+            fabmo.livecodeStart(tool_x, moveTo_y,(err));
             return false;
           }
 
@@ -71,9 +74,7 @@
 
           fabmo.requestStatus();
 //          var circle = new Path.Circle((status.posx * 50),(status.posx * 50), 10);
-          var circle = new Path.Circle(100,100, 15);
-          circle.strokeColor = "black";
-          //why not work? seg_ct = tool_y;
+          //why not work? moveTo_y = tool_y;
 
           fabmo.getConfig(function(err, cfg) {
             try {
@@ -103,6 +104,9 @@
             });
         }
 
+              //      interval = Math.min(Math.max(parseInt(interval), 1), 500);
+
+
         // While the user drags the mouse, points are added to the path
         // at the position of the mouse:
         // function onMouseDrag(event) {
@@ -121,8 +125,8 @@
         //                   if (pt_ct > 2* m_rate) {
         //                     pt_ct = 0;
 
-        //                     path.smooth({ type: 'continuous', from: seg_ct, to: (seg_ct + 7)});
-        //                     seg_ct += 8;
+        //                     path.smooth({ type: 'continuous', from: moveTo_y, to: (moveTo_y + 7)});
+        //                     moveTo_y += 8;
                             
         //                     var dist_now = path.length - len_here;
 
@@ -130,7 +134,7 @@
         //                       smooth_pt = path.getPointAt(len_here + (i * dist_now));
         //                       fabmo.livecodeStart((smooth_pt.x * 0.02), (smooth_pt.y * 0.02),(err));
         //                     }
-        //                     //console.log("**nextLoc ", to_x, to_y, pt_ct, seg_ct, m_rate);
+        //                     //console.log("**nextLoc ", to_x, to_y, pt_ct, moveTo_y, m_rate);
 
         //                     len_here = path.length;
         //                   }
@@ -145,9 +149,9 @@
 
         // // When the mouse is released, we simplify the path:
 //         function onMouseUp(event) {
-// //            path.smooth({ type: 'geometric', factor: 0.5, from: seg_ct, to: (seg_ct + pt_ct)});
+// //            path.smooth({ type: 'geometric', factor: 0.5, from: moveTo_y, to: (moveTo_y + pt_ct)});
 //             pt_ct = 0;
-//             seg_ct = 0;
+//             moveTo_y = 0;
 //             len_here = 0;
 //             var segmentCount = path.segments.length;
 //             //console.log(path);
