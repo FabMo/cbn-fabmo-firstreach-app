@@ -25,12 +25,12 @@
         var dirFilt = 1;
         var avg = 1000;
 
-        if (canvas2.addEventListener) {
-          // IE9, Chrome, Safari, Opera
-          canvas2.addEventListener("mousewheel", MouseWheelHandler, false);
-          // Firefox
-          canvas2.addEventListener("DOMMouseScroll", MouseWheelHandler, false);
-        }
+        // if (canvas2.addEventListener) {
+        //   // IE9, Chrome, Safari, Opera
+        //   canvas2.addEventListener("mousewheel", MouseWheelHandler, false);
+        //   // Firefox
+        //   canvas2.addEventListener("DOMMouseScroll", MouseWheelHandler, false);
+        // }
 
           function MouseWheelHandler(e) {
             var err, mult;
