@@ -3,10 +3,9 @@
 
         var last_pos_x = 0, last_pos_y = 0;
         var tool_x, tool_y;
+        var lastTime = new Date();
 
         var pos, smooth_pt1, smooth_pt2;
-        var err;
-        var m_rate;
         var pt_ct = 0, seg_ct = 0, evt_ct = 0;
         var len_here = 0;
         var smooth_pt = new Point();
@@ -22,44 +21,42 @@
             fillColor: 'green',
         });
 
-            path = new Path({
-                fullySelected: true,
-                strokeColor: 'green',
-            });
-path.add(new Point(0, 0));
-path.add(new Point(100, 50));                
 
-
-        //canvas2.addEventListener('mousewheel', this.onMouseWheel.bind(this));
         if (canvas2.addEventListener) {
           // IE9, Chrome, Safari, Opera
           canvas2.addEventListener("mousewheel", MouseWheelHandler, false);
           // Firefox
           canvas2.addEventListener("DOMMouseScroll", MouseWheelHandler, false);
         }
-        // IE 6/7/8
-        //else canvas2.attachEvent("onmousewheel", MouseWheelHandler);
+          var avg_ary = [200,200,200,200,200];
+          var avg = 1000;
 
           function MouseWheelHandler(e) {
-            // cross-browser wheel delta
-            //var e = window.event || e; // old IE support
-            var delta = Math.max(-1, Math.min(1, (e.wheelDelta || -e.detail)));
-            //var delta = e.wheelDelta;
+            var err, mult;
+            var delta = Math.max(-1, Math.min(1, (e.wheelDelta || -e.detail)));  // cross-browser wheel delta
+            var newTime = new Date();
+            var interval = newTime.getTime() - lastTime.getTime();
+            lastTime = newTime;
+ 
+            avg = avg - avg_ary[evt_ct];
+            //pt_ct += delta;
+            
+            avg = avg + interval;
+            avg_ary[evt_ct] = interval;
             evt_ct++;
-            pt_ct += delta;
-            if (evt_ct > 4) {
-              seg_ct += 0.1 * pt_ct;
-            fabmo.livecodeStart(tool_x, seg_ct,(err));
-            console.log(delta, pt_ct, seg_ct);
-              pt_ct = 0;
-              evt_ct = 0;
+            if (evt_ct > 4) evt_ct = 0;
+            //      interval = Math.min(Math.max(parseInt(interval), 1), 500);
+            if (avg < 1000) {
+              mult = 0.1;
+            } else if (avg < 400) {
+              mult = 0.5;
+            } else {
+              mult = 0.01;
             }
-            // else if (pt_ct < -2) {
-            //   seg_ct -= 0.1 * pt_ct;
-            // fabmo.livecodeStart(tool_x, seg_ct,(err));
-            // console.log(delta, pt_ct, seg_ct);
-            //   pt_ct = 0;
-            // }
+            seg_ct = seg_ct + (delta * mult);
+            
+            fabmo.livecodeStart(tool_x, seg_ct,(err));
+            console.log(delta, seg_ct.toFixed(3), avg, interval);
             return false;
           }
 
@@ -76,6 +73,7 @@ path.add(new Point(100, 50));
 //          var circle = new Path.Circle((status.posx * 50),(status.posx * 50), 10);
           var circle = new Path.Circle(100,100, 15);
           circle.strokeColor = "black";
+          //why not work? seg_ct = tool_y;
 
           fabmo.getConfig(function(err, cfg) {
             try {
@@ -172,19 +170,19 @@ path.add(new Point(100, 50));
     //     return false
 
 
-// //Blocking the Mouse Wheel
-// document.onmousewheel = function(){ stopWheel(); } /* IE7, IE8 */
-// if(document.addEventListener){ /* Chrome, Safari, Firefox */
-//     document.addEventListener('DOMMouseScroll', stopWheel, false);
-// }
+//Blocking the Mouse Wheel
+document.onmousewheel = function(){ stopWheel(); } /* IE7, IE8 */
+if(document.addEventListener){ /* Chrome, Safari, Firefox */
+    document.addEventListener('DOMMouseScroll', stopWheel, false);
+}
  
-// function stopWheel(e){
-//     if(!e){ e = window.event; } /* IE7, IE8, Chrome, Safari */
-//     if(e.preventDefault) { e.preventDefault(); } /* Chrome, Safari, Firefox */
-//     e.returnValue = false; /* IE7, IE8 */
-// }
-// //Re-enabling the Wheel
-// document.onmousewheel = null;  /* IE7, IE8 */
-// if(document.addEventListener){ /* Chrome, Safari, Firefox */
-//     document.removeEventListener('DOMMouseScroll', stopWheel, false);
-// }
+function stopWheel(e){
+    if(!e){ e = window.event; } /* IE7, IE8, Chrome, Safari */
+    if(e.preventDefault) { e.preventDefault(); } /* Chrome, Safari, Firefox */
+    e.returnValue = false; /* IE7, IE8 */
+}
+////Re-enabling the Wheel
+//document.onmousewheel = null;  /* IE7, IE8 */
+//if(document.addEventListener){ /* Chrome, Safari, Firefox */
+//    document.removeEventListener('DOMMouseScroll', stopWheel, false);/
+//}
