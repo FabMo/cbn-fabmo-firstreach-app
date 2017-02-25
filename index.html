@@ -5,6 +5,17 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <title>First Reach</title>
+    <link href="css/bootstrap.min.css" rel="stylesheet">
+    <script type="text/javascript" src="js/paper/paper-full.js"></script>
+    <link href="css/style.css" rel="stylesheet">
+    <script src="js/libs/jquery.js"></script>    
+    <script src="js/libs/bootstrap.min.js"></script>
+    <script src="js/libs/jquery.confirm.min.js"></script>
+    <script src="js/libs/fabmo.js"></script>
+ <!--   
+    <script src="js/tooldisplay.js"></script>
+  -->
+<!--
     <style>
         iframe,tab-pane {
             width: 100%;
@@ -14,14 +25,7 @@
             border: none;
         }
     </style>
-    <link href="css/bootstrap.min.css" rel="stylesheet">
-    <link href="css/style.css" rel="stylesheet">
-    <script type="text/javascript" src="js/paper/paper-full.js"></script>
-    <script src="js/libs/jquery.js"></script>    
-    <script src="js/libs/bootstrap.min.js"></script>
-    <script src="js/libs/jquery.confirm.min.js"></script>
-    <script src="js/libs/fabmo.js"></script>
-    <script src="js/tooldisplay.js"></script>
+-->
 </head>
 
 <body>
@@ -45,14 +49,14 @@
         </div><!-- end First Pane -->
         <!-- Second Pane -->
         <div class="tab-pane" id="tab-exp2">
-		    <canvas id="canvas2"></canvas>
+		    <canvas id="canvas2" resize=true></canvas>
 		    <script type="text/paperscript" canvas="canvas2" src="js/move_tool_paper.js">
 		    </script>
         </div><!-- end Second Pane -->
         <!-- Third Pane -->
         <div class="tab-pane" id="tab-exp3">
           <div id="container">
-		    <canvas id="canvas3"></canvas>
+		    <canvas id="canvas3" resize=true></canvas>
 		    <script type="text/paperscript" canvas="canvas3" src="js/evolve_robot_paper.js">
 		    </script>
 		  </div>  
@@ -63,6 +67,7 @@
     <script type="text/javascript">
         var fabmo = new FabMoDashboard();  // seem to need here, others not in scope?
         $(document).ready(function() {
+//$(window).trigger('resize');
 	      window.addEventListener("unload", function(e){ // Clear file ops, make abs on LOAD & UNLOAD
 	        var gcode = ['M30', 'G90'].join('\n');
 	        fabmo.runGCode(gcode);
