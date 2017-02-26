@@ -55,7 +55,7 @@
         </div><!-- end Second Pane -->
         <!-- Third Pane -->
         <div class="tab-pane" id="tab-exp3">
-          <div id="container">
+          <div id="cnv-container">
 		    <canvas id="canvas3" resize=true></canvas>
 		    <script type="text/paperscript" canvas="canvas3" src="js/evolve_robot_paper.js">
 		    </script>
@@ -67,11 +67,12 @@
     <script type="text/javascript">
         var fabmo = new FabMoDashboard();  // seem to need here, others not in scope?
         $(document).ready(function() {
-//$(window).trigger('resize');
+
 	      window.addEventListener("unload", function(e){ // Clear file ops, make abs on LOAD & UNLOAD
 	        var gcode = ['M30', 'G90'].join('\n');
 	        fabmo.runGCode(gcode);
 	      }, false);
+
         });
     </script>
 

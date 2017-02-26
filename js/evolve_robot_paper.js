@@ -11,25 +11,34 @@ path3.selected = true;
 //Grid drawing function
 //If grid-prexists, it removes it and redraws it
 //Grid lines span only the current viewport
-
+//    gridGroup = new Group();
 
 var drawGrid = function (cellSize) {
 
     var cvs3 = c3.getContext('2d');
-    cvs3.canvas.width  = window.innerWidth;
-    cvs3.canvas.height = window.innerHeight;
+    c3.width  = window.innerWidth;
+console.log(c3.width, window.innerWidth);
+    c3.height = window.innerHeight; //subtract tab area (better method?)
+//    cvs3.canvas.height = Math.round(window.innerHeight) - 40; //subtract tab area (better method?)
     view.viewSize.width = window.innerWidth;
     view.viewSize.height = window.innerHeight;
-    this.cellSize = cellSize;
-//    this.cellSize = Math.round(cvs3.canvas.width / 6);
+    //this.cellSize = cellSize;
+    this.cellSize = c3.height; //hard-coded for handibot
+    this.cellSize = Math.round(c3.height / 8); //hard-coded for handibot
     this.gridColor = '#D0D0D0';
-    this.gridGroup;
+    this.gridGroup; //seems needed, don't get why this error
     var self = this;
 
+var toType = function(obj) {
+  return ({}).toString.call(obj).match(/\s([a-zA-Z]+)/)[1].toLowerCase()
+}
+
+
+
     var boundingRect = view.bounds;
-console.log(this.cellSize, cvs3.canvas.width);
-    var num_rectangles_wide = cvs3.canvas.width / this.cellSize;
-    var num_rectangles_tall = cvs3.canvas.height / this.cellSize;
+console.log(this.cellSize, c3.width, toType(c3.width), window.innerWidth);
+    var num_rectangles_wide = c3.width / this.cellSize;
+    var num_rectangles_tall = c3.height / this.cellSize;
 //    var num_rectangles_wide = cvs3.canvas.width / 6;
 //    var num_rectangles_tall = cvs3.canvas.height / 8;
     
@@ -42,6 +51,7 @@ console.log(this.cellSize, cvs3.canvas.width);
             var topPoint = new Point(xPos, boundingRect.top);
             var bottomPoint = new Point(xPos, boundingRect.bottom);
             var v_gridLine = new Path.Line(topPoint, bottomPoint);
+//console.log(num_rectangles_wide, correctedLeftBounds, self.cellSize, topPoint, bottomPoint, view.zoom);
             v_gridLine.strokeColor = self.gridColor;
             v_gridLine.strokeWidth = 1 / view.zoom;
             self.gridGroup.addChild(v_gridLine);
@@ -81,10 +91,10 @@ function onResize(event) {
 	boundingRect = view.bounds;
 	path3.position = view.center;
 	gridGroup.position = view.center;
-//    drawGrid(25);
+    //drawGrid(25);
 }
 
-drawGrid(25);
+drawGrid(121);
 
 
 
